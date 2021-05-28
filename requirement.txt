@@ -1,0 +1,6 @@
+python =>3.6
+numpy
+opencv-compiled with cuda
+tensorrt
+pycuda
+
