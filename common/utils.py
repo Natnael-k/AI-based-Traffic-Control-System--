@@ -73,15 +73,21 @@ def schedule(lanes):
 def display_result(wait_time,lanes):
     green = (0,255,0)
     red  = (0,0,255)
+    yellow= (0,255,255)
     for i ,lane in enumerate(lanes.getLanes()):
-        if(i==(len(lanes.getLanes())-1)):
+        if(wait_time<=0 and (i==(len(lanes.getLanes())-1) or i==0)):
+           color=yellow
+           text="yellow:2 sec"
+           
+        elif(wait_time>=0 and i==(len(lanes.getLanes())-1)):
             color = green 
-            text="green:"+str(wait_time)
+            text="green:"+str(wait_time)+" sec"
             print(text)
         else:
             color=red
-            text="red:"+str(wait_time)
-        lane.frame = cv2.putText(lane.frame,text,(60,85),cv2.FONT_HERSHEY_SIMPLEX,3,color,4)
+            text="red:"+str(wait_time)+ " sec"
+        lane.frame = cv2.putText(lane.frame,text,(60,105),cv2.FONT_HERSHEY_SIMPLEX,4,color,6)
+        lane.frame = cv2.putText(lane.frame,"car count:"+str(lane.count),(60,195),cv2.FONT_HERSHEY_SIMPLEX,3,color,5)
         globals()['img%s' % lane.lane_number]=lane.frame
     hori_image = np.concatenate((img1, img2), axis=1)
     hori2_image = np.concatenate((img3, img4), axis=1)
@@ -107,7 +113,7 @@ def _make_grid(nx=20, ny=20):
 
 def drawPred( frame, classId, conf, left, top, right, bottom):
         # Draw a bounding box.
-        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), thickness=2)
+        cv2.rectangle(frame, (left, top), (right, bottom), (255, 0, 0), thickness=6)
 
         return frame
 

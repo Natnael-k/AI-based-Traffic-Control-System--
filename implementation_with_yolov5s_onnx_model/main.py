@@ -17,7 +17,7 @@ net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 ln = net.getUnconnectedOutLayersNames()
 
-lanes = util.Lanes([util.Lane("","",2),util.Lane("","",3),util.Lane("","",4),util.Lane("","",1),])
+lanes = util.Lanes([util.Lane("","",1),util.Lane("","",3),util.Lane("","",4),util.Lane("","",2),])
 wait_time=0
 
 while True:
@@ -44,9 +44,14 @@ while True:
         lanes = util.final_output(net,ln,lanes)
         end = time.time()
         print("total processing:"+str(end-start))
-        if wait_time<=1: 
+        if wait_time<=0:
+           images_transition=util.display_result(wait_time,lanes)    
+           final_image = cv2.resize(images_transition,(1020,720))
+           cv2.imshow("f",final_image)
+           cv2.waitKey(100)
+           
+            
            wait_time=util.schedule(lanes)
-        
         images_scheduled=util.display_result(wait_time,lanes)    
         final_image = cv2.resize(images_scheduled,(1020,720))
         cv2.imshow("f",final_image)
