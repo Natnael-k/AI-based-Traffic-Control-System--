@@ -32,17 +32,19 @@ class Lanes:
     def __init__(self,lanes):
         self.lanes=lanes
     
-    def getLanes():
+    def getLanes(self):
         
         return self.lanes
     
-    def lanesTurn():
+    def lanesTurn(self):
         
        return self.lanes.pop(0)
 
-    def enque(lane):
+    def enque(self,lane):
  
        return self.lanes.append(lane)
+    def lastLane(self):
+       return self.lanes[len(self.lanes)-1]
  
 class Lane:
     def __init__(self,count,frame,lane_number):
@@ -57,8 +59,8 @@ def schedule(lanes):
     reward =0
     turn = lanes.lanesTurn()
     
-    for i,lane in enumerate(laneTurns.getLanes()):
-        if(i==(len(laneTurns.getLanes())-1)):
+    for i,lane in enumerate(lanes.getLanes()):
+        if(i==(len(lanes.getLanes())-1)):
             reward = reward + (turn.count-lane.count)*0.2
         else:
             reward = reward + (turn.count-lane.count)*0.5
@@ -68,14 +70,14 @@ def schedule(lanes):
        
     
 
-def display_result(img, wait_time, turn):
+def display_result(img, wait_time):
     
     
-    hori_image = np.concatenate((img[0], img[1]), axis=1)
-    hori2_image = np.concatenate((img[2], img[3]), axis=1)
-    all_lanes_image = np.concatenate((hori_image, hori2_image), axis=0)
-
-    return all_lanes_image
+    #hori_image = np.concatenate((img[0], img[1]), axis=1)
+    #hori2_image = np.concatenate((img[2], img[3]), axis=1)
+    #all_lanes_image = np.concatenate((hori_image, hori2_image), axis=0)
+    img = cv2.putText(img,"Green:",(50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
+    return img
 
 
 
@@ -100,7 +102,7 @@ def drawPred( frame, classId, conf, left, top, right, bottom):
 
         return frame
 
-def postprocess( frame, outs):
+def postprocess(frame, outs):
         frameHeight = frame.shape[0]
         frameWidth = frame.shape[1]
         ratioh, ratiow = frameHeight / 320, frameWidth / 320
@@ -174,11 +176,10 @@ def modify(outs,confThreshold=0.5, nmsThreshold=0.5, objThreshold=0.5):
         z = np.concatenate(z, axis=1)
         return z
 
-def final_output(net,output_layer,frames):
-        cvtd_frames=[]
-        vehicle_counts= []
-        for frame in frames:
-            blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
+def final_output(net,output_layer,lanes):
+        
+        for lane in lanes.getLanes():
+            blob = cv2.dnn.blobFromImage(lane.frame, 1 / 255.0, (320, 320),
                 swapRB=True, crop=False)
             net.setInput(blob)
             start = time.time()
@@ -187,17 +188,21 @@ def final_output(net,output_layer,frames):
             print("fps:"+str(end-start))   
             dets = modify(layerOutputs)
             start = time.time()
-            boxes,frame = postprocess(frame,dets)
+            boxes,frame = postprocess(lane.frame,dets)
             end = time.time()
             print("post_process:"+str(end-start))
             start = time.time()
             count = vehicle_count(boxes)
-            vehicle_counts.append(count)
-            cvtd_frames.append(frame)
+            lane.count= count
+            print(lane.count)
+            lane.frame=frame
             end = time.time()
             print("counting and drawing:"+str(end-start))
         start = time.time()
-        all_lanes=display_result(cvtd_frames,15,0)
+        #all_lanes=display_result(,15,0)
+        wait_time,turn = schedule(lanes)
+        print(wait_time)
         end = time.time()
+        
         print("concatenate:"+str(end-start))
-        return vehicle_counts,all_lanes 
+        return wait_time,lanes.lastLane().frame 

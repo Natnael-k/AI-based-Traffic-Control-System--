@@ -17,7 +17,8 @@ net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 ln = net.getUnconnectedOutLayersNames()
 
-
+lanes = util.Lanes([util.Lane("","",2),util.Lane("","",3),util.Lane("","",4),util.Lane("","",1),])
+wait_time=0
 
 while True:
 
@@ -30,13 +31,25 @@ while True:
         # of the stream or there is disconnection
         if not success:
                 break
+        for i,lane in enumerate(lanes.getLanes()):
+            if(lane.lane_number==1):
+                lane.frame=frame
+            elif(lane.lane_number==2):
+                lane.frame=frame2
+            elif(lane.lane_number==3): 
+                lane.frame=frame3
+            elif(lane.lane_number==4):
+                lane.frame= frame4
         start = time.time()
-        counts,lanes = util.final_output(net,ln,[frame,frame2,frame3,frame4])
+        if wait_time<=1:
+            
+            wait_time,frame= util.final_output(net,ln,lanes)
         end = time.time()
         print("total processing:"+str(end-start))
-        cv2.imshow("f",lanes[0])
+        frame = cv2.putText(frame,"Green:"+str(wait_time),(50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
+        cv2.imshow("f",frame)
         cv2.waitKey(1)
-        
+        wait_time=wait_time-1
                 
 
 
