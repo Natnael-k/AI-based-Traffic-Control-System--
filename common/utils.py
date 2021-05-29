@@ -28,7 +28,7 @@ a blueprint that has lanes as lists and give queue like functionality
 to reorder lanes based on their turn for green and red light state
 """
 
-class Laneturn:
+class Lanes:
     def __init__(self,lanes):
         self.lanes=lanes
     
@@ -44,9 +44,29 @@ class Laneturn:
  
        return self.lanes.append(lane)
  
-
-
-
+class Lane:
+    def __init__(self,count,frame,lane_number):
+        self.count = count
+        self.frame = frame
+        self.lane_number = lane_number
+    
+ 
+def schedule(lanes):
+   
+    standard=10
+    reward =0
+    turn = lanes.lanesTurn()
+    
+    for i,lane in enumerate(laneTurns.getLanes()):
+        if(i==(len(laneTurns.getLanes())-1)):
+            reward = reward + (turn.count-lane.count)*0.2
+        else:
+            reward = reward + (turn.count-lane.count)*0.5
+    scheduled_time = standard+reward
+    lanes.enque(turn)
+    return scheduled_time,turn
+       
+    
 
 def display_result(img, wait_time, turn):
     
