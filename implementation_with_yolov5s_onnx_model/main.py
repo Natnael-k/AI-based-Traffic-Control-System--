@@ -41,13 +41,15 @@ while True:
             elif(lane.lane_number==4):
                 lane.frame= frame4
         start = time.time()
-        if wait_time<=1:
-            
-            wait_time,frame= util.final_output(net,ln,lanes)
+        lanes = util.final_output(net,ln,lanes)
         end = time.time()
         print("total processing:"+str(end-start))
-        frame = cv2.putText(frame,"Green:"+str(wait_time),(50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
-        cv2.imshow("f",frame)
+        if wait_time<=1: 
+           wait_time=util.schedule(lanes)
+        
+        images_scheduled=util.display_result(wait_time,lanes)    
+        final_image = cv2.resize(images_scheduled,(1020,720))
+        cv2.imshow("f",final_image)
         cv2.waitKey(1)
         wait_time=wait_time-1
                 

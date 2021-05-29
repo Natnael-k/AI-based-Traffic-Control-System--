@@ -66,19 +66,28 @@ def schedule(lanes):
             reward = reward + (turn.count-lane.count)*0.5
     scheduled_time = standard+reward
     lanes.enque(turn)
-    return scheduled_time,turn
+    return scheduled_time
        
     
 
-def display_result(img, wait_time):
+def display_result(wait_time,lanes):
+    green = (0,255,0)
+    red  = (0,0,255)
+    for i ,lane in enumerate(lanes.getLanes()):
+        if(i==(len(lanes.getLanes())-1)):
+            color = green 
+            text="green:"+str(wait_time)
+            print(text)
+        else:
+            color=red
+            text="red:"+str(wait_time)
+        lane.frame = cv2.putText(lane.frame,text,(60,85),cv2.FONT_HERSHEY_SIMPLEX,3,color,4)
+        globals()['img%s' % lane.lane_number]=lane.frame
+    hori_image = np.concatenate((img1, img2), axis=1)
+    hori2_image = np.concatenate((img3, img4), axis=1)
+    all_lanes_image = np.concatenate((hori_image, hori2_image), axis=0)
     
-    
-    #hori_image = np.concatenate((img[0], img[1]), axis=1)
-    #hori2_image = np.concatenate((img[2], img[3]), axis=1)
-    #all_lanes_image = np.concatenate((hori_image, hori2_image), axis=0)
-    img = cv2.putText(img,"Green:",(50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
-    return img
-
+    return all_lanes_image
 
 
 
@@ -198,11 +207,6 @@ def final_output(net,output_layer,lanes):
             lane.frame=frame
             end = time.time()
             print("counting and drawing:"+str(end-start))
-        start = time.time()
-        #all_lanes=display_result(,15,0)
-        wait_time,turn = schedule(lanes)
-        print(wait_time)
-        end = time.time()
         
-        print("concatenate:"+str(end-start))
-        return wait_time,lanes.lastLane().frame 
+        
+        return lanes
