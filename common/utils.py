@@ -191,6 +191,30 @@ def modify(outs,confThreshold=0.5, nmsThreshold=0.5, objThreshold=0.5):
         z = np.concatenate(z, axis=1)
         return z
 
+def final_output_tensorrt(processor,lanes):
+    for lane in lanes.getLanes():
+            
+            start = time.time()
+            output = processor.detect(lane.frame)
+            end = time.time() 
+            print("fps:"+str(end-start))   
+            dets = modify(output)
+            start = time.time()
+            boxes,frame = postprocess(lane.frame,dets)
+            end = time.time()
+            print("post_process:"+str(end-start))
+            start = time.time()
+            count = vehicle_count(boxes)
+            lane.count= count
+            print(lane.count)
+            lane.frame=frame
+            end = time.time()
+            print("counting and drawing:"+str(end-start))
+        
+        
+    return lanes
+
+
 def final_output(net,output_layer,lanes):
         
         for lane in lanes.getLanes():
