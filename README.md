@@ -11,3 +11,10 @@ This repository represents an ongoing open source research into utilizing differ
 
 - Nvidia Jetson Nano
 - Ip camera
+
+
+## Features
+
+- Detect and counts vehicles from a camera feed on each lane
+- Determine a green and red light duration based on comparison of each lanes vehicle density
+- Displays a simulatio
