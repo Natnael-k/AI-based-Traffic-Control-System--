@@ -45,18 +45,23 @@ class Lanes:
        return self.lanes.append(lane)
     def lastLane(self):
        return self.lanes[len(self.lanes)-1]
- 
+"""
+a blueprint that has lanes as lists and give queue like functionality 
+to reorder lanes based on their turn for green and red light state
+"""
 class Lane:
     def __init__(self,count,frame,lane_number):
         self.count = count
         self.frame = frame
         self.lane_number = lane_number
     
- 
+"""
+given lanes object return a duration based on comparison of each lane vehicle count
+"""
 def schedule(lanes):
    
-    standard=10
-    reward =0
+    standard=10 #standard duration
+    reward =0  #reward to be added or subtracted on the standard duration
     turn = lanes.lanesTurn()
     
     for i,lane in enumerate(lanes.getLanes()):
@@ -68,7 +73,10 @@ def schedule(lanes):
     lanes.enque(turn)
     return scheduled_time
        
-    
+"""
+given duration and lanes, returns a grid image containing frames of each lane with
+their corresponding waiting duration
+"""   
 
 def display_result(wait_time,lanes):
     green = (0,255,0)
@@ -97,7 +105,7 @@ def display_result(wait_time,lanes):
 
 
 
-
+# given detecteed boxes, return number of vehicles on each box
 def vehicle_count(Boxes):
         vehicle=0
         for box in Boxes:
@@ -106,7 +114,7 @@ def vehicle_count(Boxes):
 
         return vehicle
 
-
+# given the grid dimension, returns a 2d grid
 def _make_grid(nx=20, ny=20):
         xv, yv = np.meshgrid(np.arange(ny), np.arange(nx))
         return np.stack((xv, yv), 2).reshape((1, 1, ny, nx, 2)).astype(np.float32)
@@ -191,6 +199,12 @@ def modify(outs,confThreshold=0.5, nmsThreshold=0.5, objThreshold=0.5):
         z = np.concatenate(z, axis=1)
         return z
 
+
+"""
+given each lanes image, it inferences using trt engine on the image, return lanes object
+containg processed image and waiting duration for each image
+
+"""
 def final_output_tensorrt(processor,lanes):
     for lane in lanes.getLanes():
             
@@ -199,21 +213,20 @@ def final_output_tensorrt(processor,lanes):
             end = time.time() 
             print("fps:"+str(end-start))   
             dets = modify(output)
-            start = time.time()
             boxes,frame = postprocess(lane.frame,dets)
-            end = time.time()
-            print("post_process:"+str(end-start))
-            start = time.time()
             count = vehicle_count(boxes)
             lane.count= count
-            print(lane.count)
             lane.frame=frame
-            end = time.time()
-            print("counting and drawing:"+str(end-start))
+            
         
         
     return lanes
 
+"""
+given each lanes image, it inferences onnx model on the image, return lanes object
+containg processed image and waiting duration for each image
+
+"""
 
 def final_output(net,output_layer,lanes):
         
@@ -226,17 +239,13 @@ def final_output(net,output_layer,lanes):
             end = time.time() 
             print("fps:"+str(end-start))   
             dets = modify(layerOutputs)
-            start = time.time()
             boxes,frame = postprocess(lane.frame,dets)
-            end = time.time()
-            print("post_process:"+str(end-start))
             start = time.time()
             count = vehicle_count(boxes)
             lane.count= count
-            print(lane.count)
             lane.frame=frame
-            end = time.time()
-            print("counting and drawing:"+str(end-start))
+            
+            
         
         
         return lanes
