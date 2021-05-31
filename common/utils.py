@@ -199,17 +199,11 @@ def final_output_tensorrt(processor,lanes):
             end = time.time() 
             print("fps:"+str(end-start))   
             dets = modify(output)
-            start = time.time()
             boxes,frame = postprocess(lane.frame,dets)
-            end = time.time()
-            print("post_process:"+str(end-start))
-            start = time.time()
             count = vehicle_count(boxes)
             lane.count= count
-            print(lane.count)
             lane.frame=frame
-            end = time.time()
-            print("counting and drawing:"+str(end-start))
+            
         
         
     return lanes
@@ -226,17 +220,13 @@ def final_output(net,output_layer,lanes):
             end = time.time() 
             print("fps:"+str(end-start))   
             dets = modify(layerOutputs)
-            start = time.time()
             boxes,frame = postprocess(lane.frame,dets)
-            end = time.time()
-            print("post_process:"+str(end-start))
             start = time.time()
             count = vehicle_count(boxes)
             lane.count= count
-            print(lane.count)
             lane.frame=frame
-            end = time.time()
-            print("counting and drawing:"+str(end-start))
+            
+            
         
         
         return lanes
