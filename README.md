@@ -21,9 +21,9 @@ This  comparison is tested on jetson nano
 
 | Detection Algorithim     | Platform | FPS    |
 | :---        |    :----:   |          ---: |
-| Yolov5s      | Pytorch       | 0.32   |
-| Yolov5s    | ONNX        | 0.25      |
-| Yolov5s    | Tensorrt        | 0.08    |
+| Yolov5s      | Pytorch       |3.125   |
+| Yolov5s    | ONNX        | 4    |
+| Yolov5s    | Tensorrt        | 13    |
 | Yolov4      | Darknet       | -   |
 | Yolov3    | Darknet        | -     |
 | Yolov3-tiny    | Darknet        |  -      |
@@ -57,17 +57,48 @@ project
 |__ common
 │   │  utils.py
 |__ datas
-    │   video1.py
-    │   coco.name
+    │  video1.py
+    │  coco.name
 |__ implementation_with_yolov5s_onnx_model
-    |   main.py
+    |  main.py
 |__ implementation_with_yolov5s_tensorrt_model
     |  processor.py
     |  main.py
 |__ models
-    | yolov5s.onnx
-    | yolov5s.trt
+    |  yolov5s.onnx
+    |  yolov5s.trt
 ```
 
 
 ## Getting started
+```sh
+$ git clone https://github.com/Natnael-k/AI-based-Traffic-Control-System--.git
+$ cd AI-based-Traffic-Control-System--
+$ pip install requirement.txt
+```
+
+## How to run
+
+For CPU and GPU environments...
+The onnx implementation can run both on CPU and GPU
+```sh
+$ cd implementation_with_yolov5s_onnx_model
+$ python3 main.py
+```
+
+Only for GPU environments...
+The Tensorrt based implementation runs only on GPU
+```sh
+$ cd implementation_with_yolov5s_tensorrt_model
+$ python3 main.py
+```
+
+
+
+
+## References
+ 1. How to export yolov5s model to onnx:
+   https://github.com/ultralytics/yolov5
+ 2.  How to export onnx model to tensorrt:
+   https://github.com/SeanAvery/yolov5-tensorrt
+    
