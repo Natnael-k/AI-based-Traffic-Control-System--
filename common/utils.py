@@ -45,7 +45,7 @@ class Lanes:
        return self.lanes.append(lane)
     def lastLane(self):
        return self.lanes[len(self.lanes)-1]
- """
+"""
 a blueprint that has lanes as lists and give queue like functionality 
 to reorder lanes based on their turn for green and red light state
 """
@@ -55,7 +55,7 @@ class Lane:
         self.frame = frame
         self.lane_number = lane_number
     
- """
+"""
 given lanes object return a duration based on comparison of each lane vehicle count
 """
 def schedule(lanes):
