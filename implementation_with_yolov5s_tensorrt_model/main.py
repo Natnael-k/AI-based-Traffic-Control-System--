@@ -6,15 +6,15 @@ import utils as util
 import time
 import numpy as np
 from Processor import Processor
-
+#read image from each lanes video source
 vs  = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video1.mp4")
 vs2 = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video1.mp4")
 vs3 = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video1.mp4")
 vs4 = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video1.mp4")
 
-
+#generates a tensorrt engine with a given tensorrt model
 processor = Processor("yolov5s.trt")
-
+#initial configuration of each lanes order
 lanes = util.Lanes([util.Lane("","",1),util.Lane("","",3),util.Lane("","",4),util.Lane("","",2),])
 wait_time=0
 
@@ -29,6 +29,7 @@ while True:
         # of the stream or there is disconnection
         if not success:
                 break
+        # assigns each lane its corresponding frame
         for i,lane in enumerate(lanes.getLanes()):
             if(lane.lane_number==1):
                 lane.frame=frame
@@ -39,7 +40,7 @@ while True:
             elif(lane.lane_number==4):
                 lane.frame= frame4
         start = time.time()
-        lanes = util.final_output_tensorrt(processor,lanes)
+        lanes = util.final_output_tensorrt(processor,lanes) # returns lanes object with processed frame
         end = time.time()
         print("total processing:"+str(end-start))
         if wait_time<=0:
@@ -49,7 +50,7 @@ while True:
            cv2.waitKey(10)
            
             
-           wait_time=util.schedule(lanes)
+           wait_time=util.schedule(lanes) # returns waiting duration of each lane
         images_scheduled=util.display_result(wait_time,lanes)    
         final_image = cv2.resize(images_scheduled,(1020,720))
         cv2.imshow("f",final_image)
