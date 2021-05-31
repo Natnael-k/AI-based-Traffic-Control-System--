@@ -69,7 +69,7 @@ def schedule(lanes):
             reward = reward + (turn.count-lane.count)*0.2
         else:
             reward = reward + (turn.count-lane.count)*0.5
-    scheduled_time = standard+reward
+    scheduled_time = round((standard+reward),0)
     lanes.enque(turn)
     return scheduled_time
        
@@ -82,7 +82,10 @@ def display_result(wait_time,lanes):
     green = (0,255,0)
     red  = (0,0,255)
     yellow= (0,255,255)
+     
     for i ,lane in enumerate(lanes.getLanes()):
+  
+        
         if(wait_time<=0 and (i==(len(lanes.getLanes())-1) or i==0)):
            color=yellow
            text="yellow:2 sec"
@@ -90,13 +93,16 @@ def display_result(wait_time,lanes):
         elif(wait_time>=0 and i==(len(lanes.getLanes())-1)):
             color = green 
             text="green:"+str(wait_time)+" sec"
-            print(text)
+        
         else:
             color=red
             text="red:"+str(wait_time)+ " sec"
         lane.frame = cv2.putText(lane.frame,text,(60,105),cv2.FONT_HERSHEY_SIMPLEX,4,color,6)
         lane.frame = cv2.putText(lane.frame,"car count:"+str(lane.count),(60,195),cv2.FONT_HERSHEY_SIMPLEX,3,color,5)
         globals()['img%s' % lane.lane_number]=lane.frame
+        
+
+
     hori_image = np.concatenate((img1, img2), axis=1)
     hori2_image = np.concatenate((img3, img4), axis=1)
     all_lanes_image = np.concatenate((hori_image, hori2_image), axis=0)
@@ -120,6 +126,8 @@ def _make_grid(nx=20, ny=20):
         return np.stack((xv, yv), 2).reshape((1, 1, ny, nx, 2)).astype(np.float32)
 
 def drawPred( frame, classId, conf, left, top, right, bottom):
+        
+       
         # Draw a bounding box.
         cv2.rectangle(frame, (left, top), (right, bottom), (255, 0, 0), thickness=6)
 
@@ -206,8 +214,9 @@ containg processed image and waiting duration for each image
 
 """
 def final_output_tensorrt(processor,lanes):
+     
     for lane in lanes.getLanes():
-            
+            lane.frame=cv2.resize(lane.frame,(1280,720))      #resize into a standard image  dimension
             start = time.time()
             output = processor.detect(lane.frame)
             end = time.time() 
@@ -231,6 +240,7 @@ containg processed image and waiting duration for each image
 def final_output(net,output_layer,lanes):
         
         for lane in lanes.getLanes():
+            lane.frame=cv2.resize(lane.frame,(1280,720))      #resize into a standard image  dimension
             blob = cv2.dnn.blobFromImage(lane.frame, 1 / 255.0, (320, 320),
                 swapRB=True, crop=False)
             net.setInput(blob)
