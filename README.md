@@ -57,7 +57,7 @@ project
 |__ common
 │   │  utils.py
 |__ datas
-    │  video1.py
+    │  video1.mp4
     │  coco.name
 |__ implementation_with_yolov5s_onnx_model
     |  main.py
