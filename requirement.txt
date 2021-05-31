@@ -1,6 +1,11 @@
-python =>3.6
-numpy
-opencv-compiled with cuda
-tensorrt
+python>=3.6
+numpy==1.18.5
+opencv
+tensorrt==7.1.3.0
 pycuda
+tqdm
+protobuf
+onnx
+netron
+openCv
 
