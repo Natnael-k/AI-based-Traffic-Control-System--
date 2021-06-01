@@ -47,7 +47,7 @@ This  comparison is tested on jetson nano
 
 
 <p float="left">
-  <img src="/screenshots/prviteTena.PNG" width="600" height=400 />
+  <img src="/screenshots/workfow.png" width="600" height=400 />
 
   
 
