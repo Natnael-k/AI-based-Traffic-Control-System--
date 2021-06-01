@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(1,"/home/nerd/Desktop/AI-based-Traffic-Control-System--/common")
-
+import pathlib
 import cv2
 import utils as util
 import time
@@ -8,14 +8,14 @@ import numpy as np
 from Processor import Processor
 #read image from each lanes video source
 vs  = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video1.mp4")
-vs2 = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video.mp4")
+vs2 = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video3.mp4")
 vs3 = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video2.mp4")
-vs4 = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video3.mp4")
-
+vs4 = cv2.VideoCapture("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/video5.mp4")
+print("dir:"+str(pathlib.Path.cwd().parents[2]))
 #generates a tensorrt engine with a given tensorrt model
 processor = Processor("yolov5s.trt")
 #initial configuration of each lanes order
-lanes = util.Lanes([util.Lane("","",1),util.Lane("","",3),util.Lane("","",4),util.Lane("","",2),])
+lanes = util.Lanes([util.Lane("","",1),util.Lane("","",2),util.Lane("","",3),util.Lane("","",4),])
 wait_time=0
 
 while True:

@@ -2,13 +2,13 @@
 import numpy as np
 import cv2
 import time
-
+import pathlib
 
 
 """
 a blueprint for a bounded box with its corresponding name,confidence score and 
 """
-
+print(pathlib.Path.cwd())
 
 class BoundedBox:
     
@@ -84,7 +84,8 @@ def display_result(wait_time,lanes):
     yellow= (0,255,255)
      
     for i ,lane in enumerate(lanes.getLanes()):
-  
+        #resized so that all images have the same dimension inorder to be concatenable
+        lane.frame = cv2.resize(lane.frame,(1280, 720)) 
         
         if(wait_time<=0 and (i==(len(lanes.getLanes())-1) or i==0)):
            color=yellow
@@ -98,7 +99,7 @@ def display_result(wait_time,lanes):
             color=red
             text="red:"+str(wait_time)+ " sec"
         lane.frame = cv2.putText(lane.frame,text,(60,105),cv2.FONT_HERSHEY_SIMPLEX,4,color,6)
-        lane.frame = cv2.putText(lane.frame,"car count:"+str(lane.count),(60,195),cv2.FONT_HERSHEY_SIMPLEX,3,color,5)
+        lane.frame = cv2.putText(lane.frame,"vehicle count:"+str(lane.count),(60,195),cv2.FONT_HERSHEY_SIMPLEX,3,color,5)
         globals()['img%s' % lane.lane_number]=lane.frame
         
 
@@ -182,6 +183,7 @@ logspace transform
 def modify(outs,confThreshold=0.5, nmsThreshold=0.5, objThreshold=0.5):
         with open('/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/coco.names', 'rt') as f:
             classes = f.read().rstrip('\n').split('\n')   
+        print("dir:"+str(pathlib.Path.cwd()))
         colors = [np.random.randint(0, 255, size=3).tolist() for _ in range(len(classes))]
         num_classes = len(classes)
         anchors = [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]]
