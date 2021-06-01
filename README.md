@@ -12,7 +12,7 @@ This repository represents an ongoing open source research into utilizing differ
 
 Yolov5s is selected for this project due to its speed, lightness and accuracy. The yolov5s model can be found from https://github.com/ultralytics/yolov5 
 
-While the models speed is great, it is not efficent enough to be deployed on edge devices for inference. To take advantage of performance the model is exported into onnx version and then exported to Tensorrt model which optimizes the model for inference. The performance of the model before and after optimization is shown below. Tutorials on how to export Yolov5s model into tensorrt model can be found on the tutorial section at https://github.com/ultralytics/yolov5
+While the models speed is great, it is not efficent enough to be deployed on edge devices for inference. To take advantage of performance the model is exported into Onnx version and then exported to Tensorrt model which optimizes the model for inference. The performance of the model before and after optimization is shown below. Tutorials on how to export Yolov5s model into tensorrt model can be found on the tutorial section at https://github.com/ultralytics/yolov5
 
 
 
@@ -64,7 +64,11 @@ project
 |__ common
 │   │  utils.py
 |__ datas
+    |  video.mp4
     │  video1.mp4
+    |  video2.mp4
+    |  video3.mp4
+    |  video4.mp4
     │  coco.name
 |__ implementation_with_yolov5s_onnx_model
     |  main.py
@@ -87,7 +91,7 @@ $ pip install requirement.txt
 ## How to run
 
 For CPU and GPU environments...
-The onnx implementation can run both on CPU and GPU
+The Onnx implementation can run both on CPU and GPU
 ```sh
 $ cd implementation_with_yolov5s_onnx_model
 $ python3 main.py
