@@ -46,6 +46,13 @@ This  comparison is tested on jetson nano
 ## Work flow
 
 
+<p float="left">
+  <img src="/screenshots/prviteTena.PNG" width="600" height=400 />
+
+  
+
+</p>
+
 
 
 ## Project directory
