@@ -92,15 +92,15 @@ $ pip install requirement.txt
 For CPU and GPU environments...
 The Onnx implementation can run both on CPU and GPU
 ```sh
-$ cd implementation_with_yolov5s_onnx_model
-$ python3 main.py
+$ cd implementation_with_yolov5s_onnx_model 
+$ python3 main.py  --sources video1.mp4,video2.mp4,video3.mp4,video5.mp4
 ```
 
 Only for GPU environments...
 The Tensorrt based implementation runs only on GPU
 ```sh
 $ cd implementation_with_yolov5s_tensorrt_model
-$ python3 main.py
+$ python3 main.py --sources video1.mp4,video2.mp4,video3.mp4,video5.mp4
 ```
 
 
