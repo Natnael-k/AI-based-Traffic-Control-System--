@@ -7,12 +7,13 @@ import pycuda.driver as cuda
 import numpy as np
 import math
 import time
+import pathlib
 
 class Processor():
     def __init__(self, model):
         # load tensorrt engine
         TRT_LOGGER = trt.Logger(trt.Logger.INFO)
-        TRTbin = "/home/nerd/Desktop/AI-based-Traffic-Control-System--/models/yolov5s.trt"
+        TRTbin = str(pathlib.Path.cwd().parents[0])+"/models/yolov5s.trt"
         print('trtbin', TRTbin)
         with open(TRTbin, 'rb') as f, trt.Runtime(TRT_LOGGER) as runtime:
             engine = runtime.deserialize_cuda_engine(f.read())
