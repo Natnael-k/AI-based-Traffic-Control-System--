@@ -29,13 +29,6 @@ This  comparison is tested on jetson nano
 | Yolov3-tiny    | Darknet        |  -      |
 
 
-
-## Devices Used
-
-- Nvidia Jetson Nano
-- Ip camera
-
-
 ## Features
 
 - Detect and counts vehicles from a camera feed on each lane
@@ -52,6 +45,12 @@ This  comparison is tested on jetson nano
   
 
 </p>
+
+
+## Devices Used
+
+- Nvidia Jetson Nano
+- Ip camera
 
 
 
