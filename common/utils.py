@@ -13,7 +13,7 @@ print(pathlib.Path.cwd())
 class BoundedBox:
     
     def __init__(self, xmin, ymin, xmax, ymax, ids, confidence):
-        with open("/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/coco.names", 'rt') as f:
+        with open(str(pathlib.Path.cwd().parents[0])+"/datas/coco.names", 'rt') as f:
             self.classes = f.read().rstrip('\n').split('\n')  # stores a list of classes
         self.xmin = xmin
         self.ymin = ymin
@@ -181,7 +181,8 @@ interpret the ouptut boxes into the appropriate bounding boxes based on the yolo
 logspace transform
 """
 def modify(outs,confThreshold=0.5, nmsThreshold=0.5, objThreshold=0.5):
-        with open('/home/nerd/Desktop/AI-based-Traffic-Control-System--/datas/coco.names', 'rt') as f:
+        print(str(pathlib.Path.cwd().parents[0])+"/datas")
+        with open(str(pathlib.Path.cwd().parents[0])+'/datas/coco.names', 'rt') as f:
             classes = f.read().rstrip('\n').split('\n')   
         print("dir:"+str(pathlib.Path.cwd()))
         colors = [np.random.randint(0, 255, size=3).tolist() for _ in range(len(classes))]
